@@ -1,4 +1,4 @@
-// Key Sidecar
+// 2FA Sidecar
 // Matt Perkins - Spawned out of the need to quickly type a lot of two factor autentication
 // but still have some security while remaning mostly isolated from the host system.
 // Not for public release at the moment.
@@ -18,6 +18,7 @@ char *mainver = "1.00";
 #include "Fonts/FreeSans12pt7b.h"
 #include "Fonts/FreeSans18pt7b.h"
 #include "Fonts/FreeSans24pt7b.h"
+#include <string>
 
 #include <TOTP.h> // One time password time based library 
 #include <PinButton.h> // Button Library 
@@ -64,39 +65,10 @@ int keytest = 0;
   const char* PARAM_INPUT_3 = "tz";
 
 
-  // HTML web page to handle 3 input fields (input1, input2, input3)
-  const char index_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html><head>
-  <title>Matt's 2FA Sidecar </title>
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head><body>
-  <h2>2FA Sidecar configuration menu - Matt Perkins</h2>
-
-  <form action="/get">
-    SSID: <input type="text" name="ssid">
-    <input type="submit" value="Submit">
-  </form><br>
-  <form action="/get">
-    Password: <input type="text" name="password">
-    <input type="submit" value="Submit">
-  </form><br>
-  <form action="/get">
-    Timezone: <input type="text" name="tz">
-    <input type="submit" value="Submit">
-  </form>
-</body></html>)rawliteral";
-
-
-
-
-
-
-
-
 // Wifi Char
 //char ssid[] = "";
 //char password[] = "";
+
 
 
 // Init Screen

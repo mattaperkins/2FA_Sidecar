@@ -1,7 +1,4 @@
 
-
-
-
 void setup_test()
 {
 
@@ -106,39 +103,57 @@ void wifi_setup()
   tft.printf("Connect via Wifi\nSSID:%s\nthen browse to \nhttp://192.168.4.1", ssid);
 
 
+ 
   // Send web page with input fields to client
   server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send_P(200, "text/html", index_html);
+    request->send_P(200, "text/html", "<HEAD><TITLE>Matt's 2FA Sidecar </TITLE></HEAD><BODY><H2>2FA Sidecar configuration menu - Matt Perkins</H2>" 
+    "<FORM ACTION=\"/get\">SSID: <input type=\"text\" name=\"ssid\"><input type=\"submit\" value=\"Submit\"></form><br>" 
+    "<FORM ACTION=\"/get\">WiFi Password: <input type=\"text\" name=\"password\"><input type=\"submit\" value=\"Submit\"></form><br>" 
+    "<FORM ACTION=\"/get\">Timezone (seconds+/-) : <input type=\"text\" name=\"tz\"><input type=\"submit\" value=\"Submit\"></form><br>" 
+
+    "</BODY></HTML>");
   });
+
 
   // Send a GET request to <ESP_IP>/get?input1=<inputMessage>
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest * request) {
     String inputMessage;
     String inputParam;
+    
+   preferences.begin("2FA_Sidecar",false);
+
+    
     // GET input1 value on <ESP_IP>/get?ssid=<inputMessage>
     if (request->hasParam(PARAM_INPUT_1)) {
       inputMessage = request->getParam(PARAM_INPUT_1)->value();
       inputParam = PARAM_INPUT_1;
+      preferences.putString("ssid",inputMessage);
+
     }
     // GET input2 value on <ESP_IP>/get?password=<inputMessage>
     else if (request->hasParam(PARAM_INPUT_2)) {
       inputMessage = request->getParam(PARAM_INPUT_2)->value();
       inputParam = PARAM_INPUT_2;
+      preferences.putString("password",inputMessage);
     }
     // GET input3 value on <ESP_IP>/get?tz=<inputMessage>
     else if (request->hasParam(PARAM_INPUT_3)) {
       inputMessage = request->getParam(PARAM_INPUT_3)->value();
       inputParam = PARAM_INPUT_3;
+      preferences.putString("tz",inputMessage);
     }
     else {
       inputMessage = "No message sent";
       inputParam = "none";
     }
+    
     Serial.println(inputMessage);
-    request->send(200, "text/html", "HTTP GET request sent to your ESP on input field ("
+    request->send(200, "text/html", "Configuring preferences ("
                   + inputParam + ") with value: " + inputMessage +
                   "<br><a href=\"/\">Return to Home Page</a>");
+                  
   });
+  
   server.onNotFound(notFound);
   server.begin();
 
@@ -146,7 +161,6 @@ void wifi_setup()
   ESP.restart();
 
 }
-
 
 
 void notFound(AsyncWebServerRequest *request) {

@@ -52,13 +52,21 @@ PinButton key4(10);
 PinButton key5(11);
 
 int keytest = 0;
+int sline =0; 
+
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP);
+
 
 
   AsyncWebServer server(80);
 
   // Setup SSID
-  const char* ssid     = "Key-Sidecar";
+String ssid     = "Key-Sidecar";
+String password
 
+;
   // Paramaters
   const char* PARAM_INPUT_1 = "ssid";
   const char* PARAM_INPUT_2 = "password";
@@ -125,16 +133,57 @@ void setup() {
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextColor(ST77XX_WHITE);
   tft.setCursor(3, 15);
+  tft.printf("Key Sidecar %s - startup\n", mainver);
+  
+  preferences.begin("2FA_Sidecar", false);
+ 
+  ssid = preferences.getString("ssid", ""); 
+  password = preferences.getString("password", "");
 
-  tft.printf("Main code here\n");
-  delay(30000);
+  WiFi.begin(ssid, password);
+    
+  sline =0; 
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    tft.printf("Establishing WiFi\n");
+    sline=sline + 1; 
+    if(sline > 4){
+       tft.fillScreen(ST77XX_BLACK);
+       tft.setTextColor(ST77XX_WHITE);
+       tft.setCursor(3, 5);
+       sline =0 ; 
+    }
+  }
+  tft.print("IP: ");
+  tft.println(WiFi.localIP());
+  tft.print("Wifi: ");
+  tft.print(WiFi.RSSI());
+
+  // start the NTP client
+  timeClient.begin();
+  tft.println(); 
+  tft.print("NTP started:");
+  timeClient.update();
+  delay(1000);
+  tft.println(timeClient.getEpochTime());
+  tft.println("Iniz USB keybaord\n"); 
+  Keyboard.begin();
+  USB.begin();
+  delay(3000);
 
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  delay(1000);
-  ESP.restart();
+  // put your main code here, to run repeatedly
+  
+  timeClient.update();
+  key1.update();
+  key2.update();
+  key3.update();
+  key4.update();
+  key5.update();
+  delay(5000); 
+  
 
 }

@@ -6,7 +6,6 @@
 
 char *mainver = "1.00";
 
-
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
 #include <SPI.h> // Serial 
@@ -20,7 +19,9 @@ char *mainver = "1.00";
 #include "Fonts/FreeSans24pt7b.h"
 #include <string>
 
-#include <TOTP.h> // One time password time based library 
+#define NTP_SERVER "au.pool.ntp.org"
+
+
 #include <PinButton.h> // Button Library 
 
 #include <USB.h>
@@ -35,7 +36,12 @@ char *mainver = "1.00";
 #include <ESPAsyncTCP.h>
 #endif
 #include <ESPAsyncWebSrv.h>
-#include <NTPClient.h> // Time Deamon 
+
+
+#include <lwip/apps/sntp.h>
+#include <TOTP-RC6236-generator.hpp>
+#include <ESPmDNS.h>
+#include <ArduinoOTA.h>
 
 
 
@@ -55,27 +61,20 @@ int keytest = 0;
 int sline =0; 
 
 
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP);
-
 
 
   AsyncWebServer server(80);
 
   // Setup SSID
 String ssid     = "Key-Sidecar";
-String password
+String password;
+String tz;
 
-;
   // Paramaters
   const char* PARAM_INPUT_1 = "ssid";
   const char* PARAM_INPUT_2 = "password";
   const char* PARAM_INPUT_3 = "tz";
 
-
-// Wifi Char
-//char ssid[] = "";
-//char password[] = "";
 
 
 
@@ -132,7 +131,7 @@ void setup() {
   tft.setFont(&FreeSans9pt7b);
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextColor(ST77XX_WHITE);
-  tft.setCursor(3, 15);
+  tft.setCursor(1, 15);
   tft.printf("Key Sidecar %s - startup\n", mainver);
   
   preferences.begin("2FA_Sidecar", false);
@@ -160,30 +159,62 @@ void setup() {
   tft.print(WiFi.RSSI());
 
   // start the NTP client
-  timeClient.begin();
+  tz = preferences.getString("tz",""); 
+  const char  *ntz=tz.c_str(); 
+  configTzTime(ntz, NTP_SERVER);
   tft.println(); 
-  tft.print("NTP started:");
-  timeClient.update();
-  delay(1000);
-  tft.println(timeClient.getEpochTime());
+  tft.printf("NTP started:%s",ntz);
+  time_t t = time(NULL);
+  tft.printf(":%d",t); 
+  tft.println(); 
+  
   tft.println("Iniz USB keybaord\n"); 
   Keyboard.begin();
   USB.begin();
-  delay(3000);
+  delay(2000);
 
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly
+  static unsigned long lst = millis();
+  if (millis() - lst < 1000)
+  return;
+  lst = millis();
   
-  timeClient.update();
+  // put your main code here, to run repeatedly
+  tft.setFont(&FreeSans9pt7b);
+  tft.fillScreen(ST77XX_BLACK);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.setCursor(3, 15);
+ 
   key1.update();
   key2.update();
   key3.update();
   key4.update();
   key5.update();
-  delay(5000); 
-  
 
+
+  time_t t = time(NULL);
+  if (t < 1000000) {
+    Serial.println("Not having a stable time yet.. TOTP is not going to work.");
+    return;
+  };
+
+  // Seed value - as per the QR code; which is in fact a base32 encoded
+  // byte array (i.e. it is binary).
+  //
+  const char * seed = "WFQHTIQSQQFDZZTJ";
+
+  String * otp = TOTP::currentOTP(seed);
+
+  tft.print(ctime(&t));
+  tft.print("   TTOTP ");
+  tft.println(*otp);
+  tft.println();
+
+  delete otp;
+
+
+  
 }

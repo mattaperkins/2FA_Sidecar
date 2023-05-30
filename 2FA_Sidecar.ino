@@ -17,6 +17,8 @@ char *mainver = "1.00";
 #include "Fonts/FreeSans12pt7b.h"
 #include "Fonts/FreeSans18pt7b.h"
 #include "Fonts/FreeSans24pt7b.h"
+#include "Fonts/FreeMono9pt7b.h"
+
 #include <string>
 
 #define NTP_SERVER "au.pool.ntp.org"
@@ -58,22 +60,22 @@ PinButton key4(10);
 PinButton key5(11);
 
 int keytest = 0;
-int sline =0; 
+int sline = 0;
 
 
 
 
-  AsyncWebServer server(80);
+AsyncWebServer server(80);
 
-  // Setup SSID
+// Setup SSID
 String ssid     = "Key-Sidecar";
 String password;
 String tz;
 
-  // Paramaters
-  const char* PARAM_INPUT_1 = "ssid";
-  const char* PARAM_INPUT_2 = "password";
-  const char* PARAM_INPUT_3 = "tz";
+// Paramaters
+const char* PARAM_INPUT_1 = "ssid";
+const char* PARAM_INPUT_2 = "password";
+const char* PARAM_INPUT_3 = "tz";
 
 
 
@@ -133,24 +135,24 @@ void setup() {
   tft.setTextColor(ST77XX_WHITE);
   tft.setCursor(1, 15);
   tft.printf("Key Sidecar %s - startup\n", mainver);
-  
+
   preferences.begin("2FA_Sidecar", false);
- 
-  ssid = preferences.getString("ssid", ""); 
+
+  ssid = preferences.getString("ssid", "");
   password = preferences.getString("password", "");
 
   WiFi.begin(ssid, password);
-    
-  sline =0; 
+
+  sline = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     tft.printf("Establishing WiFi\n");
-    sline=sline + 1; 
-    if(sline > 4){
-       tft.fillScreen(ST77XX_BLACK);
-       tft.setTextColor(ST77XX_WHITE);
-       tft.setCursor(3, 5);
-       sline =0 ; 
+    sline = sline + 1;
+    if (sline > 4) {
+      tft.fillScreen(ST77XX_BLACK);
+      tft.setTextColor(ST77XX_WHITE);
+      tft.setCursor(3, 5);
+      sline = 0 ;
     }
   }
   tft.print("IP: ");
@@ -159,35 +161,33 @@ void setup() {
   tft.print(WiFi.RSSI());
 
   // start the NTP client
-  tz = preferences.getString("tz",""); 
-  const char  *ntz=tz.c_str(); 
+  tz = preferences.getString("tz", "");
+  const char  *ntz = tz.c_str();
   configTzTime(ntz, NTP_SERVER);
-  tft.println(); 
-  tft.printf("NTP started:%s",ntz);
+  tft.println();
+  tft.printf("NTP started:%s", ntz);
   time_t t = time(NULL);
-  tft.printf(":%d",t); 
-  tft.println(); 
-  
-  tft.println("Iniz USB keybaord\n"); 
+  tft.printf(":%d", t);
+  tft.println();
+
+  tft.println("Iniz USB keybaord\n");
   Keyboard.begin();
   USB.begin();
   delay(2000);
-
+  tft.fillScreen(ST77XX_BLACK);
+  tft.setTextColor(ST77XX_WHITE);
 
 }
 
 void loop() {
   static unsigned long lst = millis();
   if (millis() - lst < 1000)
-  return;
+    return;
   lst = millis();
-  
-  // put your main code here, to run repeatedly
-  tft.setFont(&FreeSans9pt7b);
-  tft.fillScreen(ST77XX_BLACK);
-  tft.setTextColor(ST77XX_WHITE);
-  tft.setCursor(3, 15);
- 
+
+
+
+
   key1.update();
   key2.update();
   key3.update();
@@ -201,20 +201,52 @@ void loop() {
     return;
   };
 
-  // Seed value - as per the QR code; which is in fact a base32 encoded
-  // byte array (i.e. it is binary).
-  //
+
   const char * seed = "WFQHTIQSQQFDZZTJ";
 
   String * otp = TOTP::currentOTP(seed);
+  
 
+  tft.setTextColor(ST77XX_WHITE);
+  tft.fillRect(0,0,240,135,ST77XX_BLACK);
+  tft.setFont(&FreeSans9pt7b);
+  tft.setCursor(3, 15);
+  
   tft.print(ctime(&t));
-  tft.print("   TTOTP ");
+  
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.setFont(&FreeSans12pt7b);
+
+  tft.setCursor(3,40); 
+  
+  tft.setTextColor(ST77XX_RED);
+  tft.print("Google ");
+  tft.setTextColor(ST77XX_YELLOW);
   tft.println(*otp);
-  tft.println();
 
-  delete otp;
 
+  tft.setTextColor(ST77XX_RED);
+  tft.print("Google ");
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.println(*otp);
+  
+
+  tft.setTextColor(ST77XX_RED);
+  tft.print("Google ");
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.println(*otp);
+  
+
+  tft.setTextColor(ST77XX_RED);
+  tft.print("Google ");
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.println(*otp);
+
+
+  tft.setTextColor(ST77XX_RED);
+  tft.print("Google ");
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.println(*otp);
 
   
 }

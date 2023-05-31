@@ -52,6 +52,7 @@ USBHIDKeyboard Keyboard;
 
 // Init our 5 keys
 int bargraph_pos;
+int updateotp;
 long time_x;
 PinButton key1(5);
 PinButton key2(6);
@@ -63,8 +64,6 @@ int keytest = 0;
 int sline = 0;
 
 
-
-
 AsyncWebServer server(80);
 
 // Setup SSID
@@ -72,10 +71,19 @@ String ssid     = "Key-Sidecar";
 String password;
 String tz;
 
-// Paramaters
+String tfa_name_1;
+String tfa_seed_1;
+
+
+// Paramaters wifi
 const char* PARAM_INPUT_1 = "ssid";
 const char* PARAM_INPUT_2 = "password";
 const char* PARAM_INPUT_3 = "tz";
+
+// Paramaters 2FA
+
+const char* TFA_INPUT_1 = "tfa_name_1";
+const char* TFA_INPUT_2 = "tfa_seed_1";
 
 
 
@@ -141,6 +149,12 @@ void setup() {
   ssid = preferences.getString("ssid", "");
   password = preferences.getString("password", "");
 
+
+  // load all pramaters
+  tfa_name_1 = preferences.getString("tfa_name_1", "");
+  tfa_seed_1 = preferences.getString("tfa_seed_1", "");
+
+
   WiFi.begin(ssid, password);
 
   sline = 0;
@@ -177,76 +191,112 @@ void setup() {
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextColor(ST77XX_WHITE);
 
+  updateotp = 1;
+
 }
 
 void loop() {
   static unsigned long lst = millis();
-  if (millis() - lst < 1000)
-    return;
+  if (millis() - lst < 1000) {
+    // UPDATE KEYS
+    key1.update();
+    key2.update();
+    key3.update();
+    key4.update();
+    key5.update();
+  }
   lst = millis();
 
 
 
-
-  key1.update();
-  key2.update();
-  key3.update();
-  key4.update();
-  key5.update();
-
+  // Update Time.
 
   time_t t = time(NULL);
+
   if (t < 1000000) {
     Serial.println("Not having a stable time yet.. TOTP is not going to work.");
     return;
   };
 
 
-  const char * seed = "WFQHTIQSQQFDZZTJ";
 
-  String * otp = TOTP::currentOTP(seed);
-  
+  bargraph_pos = (t % 60);
+  if (bargraph_pos > 29) {
+    bargraph_pos = bargraph_pos - 30;
+  }
 
-  tft.setTextColor(ST77XX_WHITE);
-  tft.fillRect(0,0,240,135,ST77XX_BLACK);
-  tft.setFont(&FreeSans9pt7b);
-  tft.setCursor(3, 15);
-  
-  tft.print(ctime(&t));
-  
-  tft.setTextColor(ST77XX_YELLOW);
-  tft.setFont(&FreeSans12pt7b);
+  bargraph_pos = bargraph_pos * 3;
+  if (bargraph_pos < 70) {
+    tft.fillCircle(bargraph_pos, 125, 3, ST77XX_GREEN);
+  } else {
+    tft.fillCircle(bargraph_pos, 125, 3, ST77XX_RED);
+  }
 
-  tft.setCursor(3,40); 
-  
-  tft.setTextColor(ST77XX_RED);
-  tft.print("Google ");
-  tft.setTextColor(ST77XX_YELLOW);
-  tft.println(*otp);
+  if (bargraph_pos == 0) {
+    updateotp = 1;
+  }
 
 
-  tft.setTextColor(ST77XX_RED);
-  tft.print("Google ");
-  tft.setTextColor(ST77XX_YELLOW);
-  tft.println(*otp);
-  
+  // Display updated OTP.
+  if (updateotp == 1) {
+    updateotp = 0;
+    String * otp = TOTP::currentOTP(tfa_seed_1);
+    tft.setTextColor(ST77XX_YELLOW);
+    tft.setFont(&FreeSans12pt7b);
+    tft.fillScreen(ST77XX_BLACK);
 
-  tft.setTextColor(ST77XX_RED);
-  tft.print("Google ");
-  tft.setTextColor(ST77XX_YELLOW);
-  tft.println(*otp);
-  
+    // Key 1
+    tft.setCursor(3, 17);
+    tft.setTextColor(ST77XX_RED);
+    tft.print(tfa_name_1);
+    tft.setCursor(140, 17);
+    tft.setTextColor(ST77XX_YELLOW);
+    tft.println(*otp);
 
-  tft.setTextColor(ST77XX_RED);
-  tft.print("Google ");
-  tft.setTextColor(ST77XX_YELLOW);
-  tft.println(*otp);
+    // Key 2
+    tft.setCursor(3, 40);
+    tft.setTextColor(ST77XX_RED);
+    tft.print(tfa_name_1);
+    tft.setCursor(140, 40);
+    tft.setTextColor(ST77XX_YELLOW);
+    tft.println(*otp);
+
+    // Key 3
+    tft.setCursor(3, 63);
+    tft.setTextColor(ST77XX_RED);
+    tft.print(tfa_name_1);
+    tft.setCursor(140, 63);
+    tft.setTextColor(ST77XX_YELLOW);
+    tft.println(*otp);
+
+    // Key 4
+    tft.setCursor(3, 86);
+    tft.setTextColor(ST77XX_RED);
+    tft.print(tfa_name_1);
+    tft.setCursor(140, 86);
+    tft.setTextColor(ST77XX_YELLOW);
+    tft.println(*otp);
+
+    // Key 5
+    tft.setCursor(3, 109);
+    tft.setTextColor(ST77XX_RED);
+    tft.print(tfa_name_1);
+    tft.setCursor(140, 109);
+    tft.setTextColor(ST77XX_YELLOW);
+    tft.println(*otp);
+
+  }
 
 
-  tft.setTextColor(ST77XX_RED);
-  tft.print("Google ");
-  tft.setTextColor(ST77XX_YELLOW);
-  tft.println(*otp);
 
-  
+  // check keypress
+  if (key1.isClick()) {
+    String * otp = TOTP::currentOTP(tfa_seed_1);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+    Keyboard.println(*otp);
+    //Keyboard.press(KEY_LEFT_CTRL); Keyboard.press('m'); Keyboard.releaseAll(); // CR=Ctrl-M
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+
 }

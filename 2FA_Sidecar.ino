@@ -4,7 +4,7 @@
 // Not for public release at the moment.
 
 
-char *mainver = "1.00";
+char *mainver = "1.01";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
@@ -74,6 +74,19 @@ String tz;
 String tfa_name_1;
 String tfa_seed_1;
 
+String tfa_name_2;
+String tfa_seed_2;
+
+String tfa_name_3;
+String tfa_seed_3;
+
+String tfa_name_4;
+String tfa_seed_4;
+
+String tfa_name_5;
+String tfa_seed_5;
+
+
 
 // Paramaters wifi
 const char* PARAM_INPUT_1 = "ssid";
@@ -84,6 +97,18 @@ const char* PARAM_INPUT_3 = "tz";
 
 const char* TFA_INPUT_1 = "tfa_name_1";
 const char* TFA_INPUT_2 = "tfa_seed_1";
+
+const char* TFA_INPUT_3 = "tfa_name_2";
+const char* TFA_INPUT_4 = "tfa_seed_2";
+
+const char* TFA_INPUT_5 = "tfa_name_3";
+const char* TFA_INPUT_6 = "tfa_seed_3";
+
+const char* TFA_INPUT_7 = "tfa_name_4";
+const char* TFA_INPUT_8 = "tfa_seed_4";
+
+const char* TFA_INPUT_9 = "tfa_name_5";
+const char* TFA_INPUT_10 = "tfa_seed_5";
 
 
 
@@ -154,6 +179,25 @@ void setup() {
   tfa_name_1 = preferences.getString("tfa_name_1", "");
   tfa_seed_1 = preferences.getString("tfa_seed_1", "");
 
+  tfa_name_2 = preferences.getString("tfa_name_2", "");
+  tfa_seed_2 = preferences.getString("tfa_seed_2", "");
+
+  tfa_name_3 = preferences.getString("tfa_name_3", "");
+  tfa_seed_3 = preferences.getString("tfa_seed_3", "");
+
+  tfa_name_4 = preferences.getString("tfa_name_4", "");
+  tfa_seed_4 = preferences.getString("tfa_seed_4", "");
+
+  tfa_name_5 = preferences.getString("tfa_name_5", "");
+  tfa_seed_5 = preferences.getString("tfa_seed_5", "");
+
+  Serial.printf("tfa_name_2 %s\n", tfa_name_1);
+  Serial.printf("tfa_name_2 %s\n", tfa_name_2);
+  Serial.printf("tfa_name_3 %s\n", tfa_name_3);
+  Serial.printf("tfa_name_4 %s\n", tfa_name_4);
+  Serial.printf("tfa_name_5 %s\n", tfa_name_5);
+
+
 
   WiFi.begin(ssid, password);
 
@@ -214,7 +258,7 @@ void loop() {
   time_t t = time(NULL);
 
   if (t < 1000000) {
-    Serial.println("Not having a stable time yet.. TOTP is not going to work.");
+    Serial.println("Waiting for good time .");
     return;
   };
 
@@ -240,50 +284,57 @@ void loop() {
   // Display updated OTP.
   if (updateotp == 1) {
     updateotp = 0;
-    String * otp = TOTP::currentOTP(tfa_seed_1);
     tft.setTextColor(ST77XX_YELLOW);
     tft.setFont(&FreeSans12pt7b);
     tft.fillScreen(ST77XX_BLACK);
 
     // Key 1
+    String * otp1 = TOTP::currentOTP(tfa_seed_1);
     tft.setCursor(3, 17);
     tft.setTextColor(ST77XX_RED);
     tft.print(tfa_name_1);
     tft.setCursor(140, 17);
     tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp);
+    tft.println(*otp1);
 
     // Key 2
+    String * otp2 = TOTP::currentOTP(tfa_seed_2);
     tft.setCursor(3, 40);
     tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_1);
+    tft.print(tfa_name_2);
     tft.setCursor(140, 40);
     tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp);
+    tft.println(*otp2);
 
     // Key 3
+    String * otp3 = TOTP::currentOTP(tfa_seed_3);
     tft.setCursor(3, 63);
     tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_1);
+    tft.print(tfa_name_3);
     tft.setCursor(140, 63);
     tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp);
+    tft.println(*otp3);
 
     // Key 4
+    String * otp4 = TOTP::currentOTP(tfa_seed_4);
     tft.setCursor(3, 86);
     tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_1);
+    tft.print(tfa_name_4);
     tft.setCursor(140, 86);
     tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp);
+    tft.println(*otp4);
 
     // Key 5
+    String * otp5 = TOTP::currentOTP(tfa_seed_5);
     tft.setCursor(3, 109);
     tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_1);
+    tft.print(tfa_name_5);
     tft.setCursor(140, 109);
     tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp);
+    tft.println(*otp5);
+
+    // Make up the rest of the second so we dont flash the screen.
+    delay(999);
 
   }
 
@@ -291,12 +342,45 @@ void loop() {
 
   // check keypress
   if (key1.isClick()) {
-    String * otp = TOTP::currentOTP(tfa_seed_1);
+    String * otp1 = TOTP::currentOTP(tfa_seed_1);
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);
-    Keyboard.println(*otp);
-    //Keyboard.press(KEY_LEFT_CTRL); Keyboard.press('m'); Keyboard.releaseAll(); // CR=Ctrl-M
+    Keyboard.println(*otp1);
     digitalWrite(LED_BUILTIN, LOW);
   }
+
+  if (key2.isClick()) {
+    String * otp2 = TOTP::currentOTP(tfa_seed_2);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+    Keyboard.println(*otp2);
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+
+  if (key3.isClick()) {
+    String * otp3 = TOTP::currentOTP(tfa_seed_3);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+    Keyboard.println(*otp3);
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+
+  if (key4.isClick()) {
+    String * otp4 = TOTP::currentOTP(tfa_seed_4);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+    Keyboard.println(*otp4);
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+
+  if (key5.isClick()) {
+    String * otp5 = TOTP::currentOTP(tfa_seed_5);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+    Keyboard.println(*otp5);
+    digitalWrite(LED_BUILTIN, LOW);
+  }
+
+
 
 }

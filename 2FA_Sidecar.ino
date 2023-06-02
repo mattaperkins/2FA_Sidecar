@@ -4,7 +4,7 @@
 // Not for public release at the moment.
 
 
-char *mainver = "1.01";
+char *mainver = "1.02";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
@@ -289,49 +289,58 @@ void loop() {
     tft.fillScreen(ST77XX_BLACK);
 
     // Key 1
-    String * otp1 = TOTP::currentOTP(tfa_seed_1);
+    if(String * otp1 = TOTP::currentOTP(tfa_seed_1)){
     tft.setCursor(3, 17);
     tft.setTextColor(ST77XX_RED);
     tft.print(tfa_name_1);
     tft.setCursor(140, 17);
     tft.setTextColor(ST77XX_YELLOW);
     tft.println(*otp1);
+    }else{
+    tft.setCursor(3, 17);
+    tft.setTextColor(ST77XX_RED);
+    tft.print("NO VALID CONFIG");
+    };
 
     // Key 2
-    String * otp2 = TOTP::currentOTP(tfa_seed_2);
+    if(String * otp2 = TOTP::currentOTP(tfa_seed_2)){
     tft.setCursor(3, 40);
     tft.setTextColor(ST77XX_RED);
     tft.print(tfa_name_2);
     tft.setCursor(140, 40);
     tft.setTextColor(ST77XX_YELLOW);
     tft.println(*otp2);
+    };
 
     // Key 3
-    String * otp3 = TOTP::currentOTP(tfa_seed_3);
+    if(String * otp3 = TOTP::currentOTP(tfa_seed_3)){
     tft.setCursor(3, 63);
     tft.setTextColor(ST77XX_RED);
     tft.print(tfa_name_3);
     tft.setCursor(140, 63);
     tft.setTextColor(ST77XX_YELLOW);
     tft.println(*otp3);
+    };
 
     // Key 4
-    String * otp4 = TOTP::currentOTP(tfa_seed_4);
+    if(String * otp4 = TOTP::currentOTP(tfa_seed_4)){
     tft.setCursor(3, 86);
     tft.setTextColor(ST77XX_RED);
     tft.print(tfa_name_4);
     tft.setCursor(140, 86);
     tft.setTextColor(ST77XX_YELLOW);
     tft.println(*otp4);
+    };
 
     // Key 5
-    String * otp5 = TOTP::currentOTP(tfa_seed_5);
+    if(String * otp5 = TOTP::currentOTP(tfa_seed_5)){
     tft.setCursor(3, 109);
     tft.setTextColor(ST77XX_RED);
     tft.print(tfa_name_5);
     tft.setCursor(140, 109);
     tft.setTextColor(ST77XX_YELLOW);
     tft.println(*otp5);
+    };
 
     // Make up the rest of the second so we dont flash the screen.
     delay(999);

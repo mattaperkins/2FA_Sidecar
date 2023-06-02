@@ -1,7 +1,7 @@
 <PRE>
 // 2FA Sidecar
 // Matt Perkins - Copyright (C) 2023
-// Spawned out of the need to quickly type a lot of two factor authentication
+// Spawned out of the need to often type a lot of two factor authentication
 // but still have some security while remaining mostly isolated from the host system.
 // See github for 3D models and wiring diagram.
 /*
@@ -24,7 +24,8 @@
 </PRE>
 <h2>About</h2> 
 Code for the companion 5 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type Keys to build a sidecar that can type pre-stored Google auth type two factor identification as a keyboard would but with a single key press. <p> 
-Codes can also be typed in manually from the screen.  2FA seeds are stored in a way that makes them a little difficult to extract but not impossible so the device itself should be in a secure location. 
+Codes can also be typed in manually from the screen.  2FA seeds are stored in a way that could be extract by loading custom code so the device itself should be in a secure location. It will not display them however on the config page so there is some basic protection. 
+
 
 <h2>Dependences</h2>
 

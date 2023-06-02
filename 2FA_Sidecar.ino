@@ -1,27 +1,46 @@
 // 2FA Sidecar
-// Matt Perkins - Spawned out of the need to quickly type a lot of two factor autentication
+// Matt Perkins - Copyright (C) 2023
+// Spawned out of the need to quickly type a lot of two factor autentication
 // but still have some security while remaning mostly isolated from the host system.
-// Not for public release at the moment.
+// See github for 3D models and wiring diagram.
+/*
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+*/
 
 
-char *mainver = "1.02";
+#define NTP_SERVER "au.pool.ntp.org" //Adjust to your local time perhaps. 
+
+// No need to change anything bellow 
+// 
+
+char *mainver = "1.04";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
-#include <SPI.h> // Serial 
+#include <SPI.h>  
 #include <Preferences.h> // perstant storage
 
 // Misc Fonts
-#include "Fonts/Picopixel.h"
 #include "Fonts/FreeSans9pt7b.h"
 #include "Fonts/FreeSans12pt7b.h"
 #include "Fonts/FreeSans18pt7b.h"
-#include "Fonts/FreeSans24pt7b.h"
-#include "Fonts/FreeMono9pt7b.h"
+#include "Fonts/FreeMono12pt7b.h"
 
 #include <string>
 
-#define NTP_SERVER "au.pool.ntp.org"
 
 
 #include <PinButton.h> // Button Library 
@@ -69,7 +88,7 @@ AsyncWebServer server(80);
 // Setup SSID
 String ssid     = "Key-Sidecar";
 String password;
-String tz;
+String  tz;
 
 String tfa_name_1;
 String tfa_seed_1;
@@ -86,15 +105,12 @@ String tfa_seed_4;
 String tfa_name_5;
 String tfa_seed_5;
 
-
-
 // Paramaters wifi
 const char* PARAM_INPUT_1 = "ssid";
 const char* PARAM_INPUT_2 = "password";
 const char* PARAM_INPUT_3 = "tz";
 
 // Paramaters 2FA
-
 const char* TFA_INPUT_1 = "tfa_name_1";
 const char* TFA_INPUT_2 = "tfa_seed_1";
 
@@ -121,8 +137,6 @@ Preferences preferences;
 
 
 void setup() {
-  Serial.begin(9600);
-  Serial.printf("Key Sidecar %s - startup\n", mainver); // output version test serial.
 
   // turn on backlite
   pinMode(TFT_BACKLITE, OUTPUT);
@@ -139,11 +153,11 @@ void setup() {
   tft.fillScreen(ST77XX_BLACK);
   tft.setFont(&FreeSans9pt7b);
 
-  // Print Bootup / Welcome
+  // Print Bootup
   tft.setCursor(0, 0);
   tft.setTextColor(ST77XX_WHITE);
   tft.setTextWrap(true);
-  tft.printf("\nKey Sidecar Ver %s\nBy Matt Perkins\n", mainver);
+  tft.printf("\n2FA-Sidecar Ver %s\nBy Matt Perkins (C) 2023\n", mainver);
   tft.printf("Press K1 to enter config/test\n");
 
   // Check for key and go to setup /test mode
@@ -162,12 +176,11 @@ void setup() {
     lcount++;
   }
 
-  // Continue to run normaly.
   tft.setFont(&FreeSans9pt7b);
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextColor(ST77XX_WHITE);
   tft.setCursor(1, 15);
-  tft.printf("Key Sidecar %s - startup\n", mainver);
+  tft.printf("2FA-Sidecar V%s - startup\n", mainver);
 
   preferences.begin("2FA_Sidecar", false);
 
@@ -190,14 +203,6 @@ void setup() {
 
   tfa_name_5 = preferences.getString("tfa_name_5", "");
   tfa_seed_5 = preferences.getString("tfa_seed_5", "");
-
-  Serial.printf("tfa_name_2 %s\n", tfa_name_1);
-  Serial.printf("tfa_name_2 %s\n", tfa_name_2);
-  Serial.printf("tfa_name_3 %s\n", tfa_name_3);
-  Serial.printf("tfa_name_4 %s\n", tfa_name_4);
-  Serial.printf("tfa_name_5 %s\n", tfa_name_5);
-
-
 
   WiFi.begin(ssid, password);
 
@@ -258,7 +263,7 @@ void loop() {
   time_t t = time(NULL);
 
   if (t < 1000000) {
-    Serial.println("Waiting for good time .");
+    delay(500); 
     return;
   };
 
@@ -281,7 +286,8 @@ void loop() {
   }
 
 
-  // Display updated OTP.
+  // Display updated OTP per key
+
   if (updateotp == 1) {
     updateotp = 0;
     tft.setTextColor(ST77XX_YELLOW);
@@ -289,64 +295,75 @@ void loop() {
     tft.fillScreen(ST77XX_BLACK);
 
     // Key 1
-    if(String * otp1 = TOTP::currentOTP(tfa_seed_1)){
-    tft.setCursor(3, 17);
-    tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_1);
-    tft.setCursor(140, 17);
-    tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp1);
-    }else{
-    tft.setCursor(3, 17);
-    tft.setTextColor(ST77XX_RED);
-    tft.print("NO VALID CONFIG");
+    if (String * otp1 = TOTP::currentOTP(tfa_seed_1)) {
+      tft.setCursor(3, 17);
+      tft.setTextColor(ST77XX_RED);
+      tft.setFont(&FreeSans12pt7b);
+      tft.print(tfa_name_1);
+      tft.setCursor(140, 17);
+      tft.setTextColor(ST77XX_YELLOW);
+      tft.setFont(&FreeMono12pt7b);
+      tft.println(*otp1);
+    } else {
+      tft.setCursor(3, 17);
+      tft.setTextColor(ST77XX_RED);
+      tft.print("NO VALID CONFIG");
     };
 
     // Key 2
-    if(String * otp2 = TOTP::currentOTP(tfa_seed_2)){
-    tft.setCursor(3, 40);
-    tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_2);
-    tft.setCursor(140, 40);
-    tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp2);
+    if (String * otp2 = TOTP::currentOTP(tfa_seed_2)) {
+      tft.setCursor(3, 40);
+      tft.setTextColor(ST77XX_RED);
+      tft.setFont(&FreeSans12pt7b);
+      tft.print(tfa_name_2);
+      tft.setCursor(140, 40);
+      tft.setTextColor(ST77XX_YELLOW);
+      tft.setFont(&FreeMono12pt7b);
+
+      tft.println(*otp2);
     };
 
     // Key 3
-    if(String * otp3 = TOTP::currentOTP(tfa_seed_3)){
-    tft.setCursor(3, 63);
-    tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_3);
-    tft.setCursor(140, 63);
-    tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp3);
+    if (String * otp3 = TOTP::currentOTP(tfa_seed_3)) {
+      tft.setCursor(3, 63);
+      tft.setTextColor(ST77XX_RED);
+      tft.setFont(&FreeSans12pt7b);
+      tft.print(tfa_name_3);
+      tft.setCursor(140, 63);
+      tft.setTextColor(ST77XX_YELLOW);
+      tft.setFont(&FreeMono12pt7b);
+      tft.println(*otp3);
     };
 
     // Key 4
-    if(String * otp4 = TOTP::currentOTP(tfa_seed_4)){
-    tft.setCursor(3, 86);
-    tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_4);
-    tft.setCursor(140, 86);
-    tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp4);
+    if (String * otp4 = TOTP::currentOTP(tfa_seed_4)) {
+      tft.setCursor(3, 86);
+      tft.setTextColor(ST77XX_RED);
+      tft.setFont(&FreeSans12pt7b);
+      tft.print(tfa_name_4);
+      tft.setCursor(140, 86);
+      tft.setTextColor(ST77XX_YELLOW);
+      tft.setFont(&FreeMono12pt7b);
+      tft.println(*otp4);
     };
 
     // Key 5
-    if(String * otp5 = TOTP::currentOTP(tfa_seed_5)){
-    tft.setCursor(3, 109);
-    tft.setTextColor(ST77XX_RED);
-    tft.print(tfa_name_5);
-    tft.setCursor(140, 109);
-    tft.setTextColor(ST77XX_YELLOW);
-    tft.println(*otp5);
+    if (String * otp5 = TOTP::currentOTP(tfa_seed_5)) {
+      tft.setCursor(3, 109);
+      tft.setTextColor(ST77XX_RED);
+      tft.setFont(&FreeSans12pt7b);
+      tft.print(tfa_name_5);
+      tft.setCursor(140, 109);
+      tft.setTextColor(ST77XX_YELLOW);
+      tft.setFont(&FreeMono12pt7b);
+
+      tft.println(*otp5);
     };
 
-    // Make up the rest of the second so we dont flash the screen.
+    // Make up the rest of the second so we dont fliker the screen.
     delay(999);
 
   }
-
 
 
   // check keypress

@@ -43,8 +43,19 @@ When the sidecar is running in normal mode it is not accessible by any network s
 
 <h2>Dependences</h2>
 
-<h2>3d printing</h2>
-The 3d model is based on cherry mx macro pad by LeoAnth found on thingiverse. I remixed that design to fit the Reverse TFT Feather it also has a pin hole so you can access the reset button externally so once complete the boot loader can be accessed.  It prints fine without supports on my snap maker in both ABS and PLA. Print it upside down with no special options. The Lid can then be glued in place once the project is complete and tested. There are also two small plastic squares that can be used to hold the feather in position. Use a drop of glue to hold them in position. I then just used 6 drops of super glue to afix the bottom. (see the pictures) 
+<h2>3D Printing</h2>
+The 3d model is based on cherry mx macro pad by LeoAnth found on thingiverse. I remixed that design to fit the Reverse TFT Feather it also has a pin hole so you can access the reset button externally so once complete the boot loader can be accessed.  It prints fine without supports on my snap maker in both ABS and PLA. Print it upside down with no special options. The Lid can then be glued in place once the project is complete and tested. There are also two small plastic squares that can be used to hold the feather in position. Use a drop of glue to hold them in position. I then just used 6 drops of super glue to afix the bottom. 
+</p>
+<pre>
+base.stl - Bottom plate. 
+main_body.stl - Main unit print upside down keys pop in. 
+shroud.stl - Optional but to put around keys. 
+standoffs.stl - Plastic bits to hold the ESP32 in place 
+
+<img src = "3d_model/main_body.stl"> 
+
+
+
 
 
 <h2>Hookup </h3>

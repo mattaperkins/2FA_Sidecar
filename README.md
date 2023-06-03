@@ -51,8 +51,7 @@ base.stl - Bottom plate.
 main_body.stl - Main unit print upside down keys pop in. 
 shroud.stl - Optional but to put around keys. 
 standoffs.stl - Plastic bits to hold the ESP32 in place 
-
-<img src = "3d_model/main_body.stl"> 
+</pre>
 
 
 

@@ -76,8 +76,8 @@ Configuration is very simple. On powering up the sidecar press key 1 (the key cl
 At this point you will need to add some TOTP salts. These can be found when your one time password is initially generated on the service you want to authenticate . It will usually represent as a QR code. When you see the QR code there is usually an option display your code manually. Find that option which will typically display a group of base32 letters. It might look something like this WWKAAJJWJJAASZ====. </p><p>  
 
 The sidecar can store up to five TOTP salts (one for each key) so make sure you have them all in advance ready to configure your sidecar. Once your ready and the self test has passed you will be able to connect to the sidecar over wifi. Use your smart phone or computer to scan for the SSID  "Key-Sidecar" and connect. Once connected open your favorite browser and connect to http://192.168.4.1 and you should see the config menu 
+<img src = "images/sidecar-menu.png">
 
--- IMAGE HERE -- 
 </p><p> 
 
 You may then configure your system SSID and password so the sidecar can get an accurate time at startup as well as your 5 TOTP's and a corrisponding name for each.  Enter in each option one at a time pressing submit at each option.  You can only submit using the button next to each option. (yes i know it's not pretty on the todo list it's an evolving project) . 

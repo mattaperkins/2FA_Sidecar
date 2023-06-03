@@ -1,6 +1,6 @@
 // 2FA Sidecar
 // Matt Perkins - Copyright (C) 2023
-// Spawned out of the need to quickly type a lot of two factor autentication
+// Spawned out of the need to often type a lot of two factor authentication
 // but still have some security while remaning mostly isolated from the host system.
 // See github for 3D models and wiring diagram.
 /*

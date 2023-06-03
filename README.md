@@ -21,6 +21,7 @@
 
 */
 
+<img src = "images/sidecar-image.jpeg">
 </PRE>
 <h2>About</h2> 
 The 2FA Sidecar is a small side keyboard of 5 Keys that will send time based two factor authentication as typed keyboard keys with just a single key press. <p>
@@ -31,14 +32,14 @@ The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Fe
 
 <h2>Security</h2>
 
-When the sidecar is running in normal mode it is not accessible by any network services and maintains a network connection to update accurate time from a time server only. So it should not be easy for a malicious actor to connect to the sidecar and access the TOTP salt. It would be however possible to download new code to the ESP32 and then retrieve the salts from the parameters memory. So if you want to keep it as secure as possible. You may burn the protective Efuses on the ESP32 to protect flash memory. Even with this done it may be possible to retrieve the salts by much smarter people then i. So i warrant noting. Use it at your own risk. It goes without question to say also that if someone is in possession of the device they can use your TOTP so you need to keep the device secure. In the same way you would with any key fob. 
+When the sidecar is running in normal mode it is not accessible by any network services and maintains a network connection to update accurate time from a time server only. So it should not be easy for a malicious actor to connect to the sidecar and access the TOTP salt. It would be however possible to download new code to the ESP32 and then retrieve the salts from the parameters memory. So if you want to keep it as secure as possible. You may burn the protective Efuses on the ESP32 to protect flash memory. Even with this done it may be possible to retrieve the salts by much smarter people then i. So i warrant nothing. Use it at your own risk. It goes without question to say also that if someone is in possession of the device they can use your TOTP so you need to keep the device secure. In the same way you would with any key fob. 
 
 <h2>Hardware Required</h2>
 <p>Adafruit ESP32-S3 Reverse TFT Feather - 4MB Flash, 2MB PSRAM, STEMMA QT https://www.adafruit.com/product/5691 </p>
 <p>Case can be printed from PLA/ABS or whatever really</p>
 <p>5 X Cherry MX switches https://core-electronics.com.au/cherry-mx-switch.html click=good</p>
 <p>5 X Cherry MX key caps you can source your own or print them many people sell them There's all sorts.</p>
-<p>Hookup wire soldering iron and hand tools, super glue</p> 
+<p>Hookup wire soldering iron and hand tools, super glue </p> <p>- Core electronics stock all of the above</p> 
 
 <h2>Dependences</h2>
 
@@ -46,8 +47,8 @@ When the sidecar is running in normal mode it is not accessible by any network s
 The 3d model is based on cherry mx macro pad by LeoAnth found on thingiverse. I remixed that design to fit the Reverse TFT Feather it also has a pin hole so you can access the reset button externally so once complete the boot loader can be accessed.  It prints fine without supports on my snap maker in both ABS and PLA. Print it upside down with no special options. The Lid can then be glued in place once the project is complete and tested. There are also two small plastic squares that can be used to hold the feather in position. Use a drop of glue to hold them in position. I then just used 6 drops of super glue to afix the bottom. (see the pictures) 
 
 
-<h2>Wiring</h3>
-Wiring the Cherry MX keys are very simple. Wire one leg of each key to ground and then run a wire from the other leg of each key to the following pins.
+<h2>Hookup </h3>
+To Wire the Cherry MX keys is very simple. Wire one leg of each key to ground and then run a wire from the other leg of each key to the following pins. YOu might want to solder the switches before you pop them into the case. They can be held with a drop of glue but will fit snugly without as well.
 <pre>
 Key 1 = Pin (5)
 Key 2 = Pin (6)
@@ -55,12 +56,12 @@ Key 3 = Pin (9)
 Key 4 = Pin (10)
 Ket 5 = Pin (11)
 </pre>
-That's it once you flash the esp32 and power up press key 1 within the first 3 second of booting and you will enter a self test and config mode. In the self test mode you can push each key one by one and it will verify your wiring and operation of the keys. Once all 5 keys have been pushed the system will proceed to the config web menu.
+That's it. Once you flash the esp32 and power up press key 1 within the first 3 second of booting and you will enter a self test and config mode. In the self test mode you can push each key one by one and it will verify your soldering and operation of the keys. Once all 5 keys have been pushed the system will proceed to the config web menu.
 
 
-and power up <h2>How to configure</h2>
+<h2>How to configure</h2>
 
-Configuration is very simple. On powering up the sidecar press key 1 (the key closest to the TFT) within 3 seconds. As it's printing all the dots ... <p> You will then enter the self test menu. Press each key in turn until you see test passed. If you do not see a test passed check your wiring. Once the test is passed the system will enter a mode where you edit the config</p><p>
+Configuration is very simple. On powering up the sidecar press key 1 (the key closest to the TFT) within 3 seconds. As it's printing all the dots ... <p> You will then enter the self test menu. Press each key in turn until you see "test pass" If you do not see a test passed check your wiring. Once the test is passed the system will enter a mode where you edit the config</p><p>
 
 At this point you will need to add some TOTP salts. These can be found when your one time password is initially generated on the service you want to authenticate . It will usually represent as a QR code. When you see the QR code there is usually an option display your code manually. Find that option which will typically display a group of base32 letters. It might look something like this WWKAAJJWJJAASZ====. </p><p>  
 

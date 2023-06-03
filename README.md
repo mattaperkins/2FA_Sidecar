@@ -64,6 +64,7 @@ TOTP-RC6236-generator at version 1.0.0
 Base32-Decode at version 1.0.1
 ESPmDNS at version 2.0.0
 ArduinoOTA at version 2.0.0
+</pre>
 
 <h2>3D Printing</h2>
 The 3d model is based on cherry mx macro pad by LeoAnth found on thingiverse. I remixed that design to fit the Reverse TFT Feather it also has a pin hole so you can access the reset button externally so once complete the boot loader can be accessed.  It prints fine without supports on my snap maker in both ABS and PLA. Print it upside down with no special options. The Lid can then be glued in place once the project is complete and tested. There are also two small plastic squares that can be used to hold the feather in position. Use a drop of glue to hold them in position. I then just used 6 drops of super glue to afix the bottom. 

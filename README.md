@@ -26,6 +26,7 @@
 <h2>About</h2> 
 The 2FA Sidecar is a small side keyboard of 5 Keys that will send time based two factor authentication as typed keyboard keys with just a single key press. <p>
 The sidecar is compatible with Googles 2FA (TOTP; specified in RFC 6238) and works with many different systems. The device was developed because in my day job i spend a lot of time switching between security levels in different parts of a network I administer and need to open the phone grab the code type it in etc. The sidecar does it all with one key press and supports up to 5 TOTP's for different systems.  You can also of cause read the code off the TFT screen on the front of the device and type it yourself as well. 
+The device should work on any platfrom that supports USB HID.
 <p>
 The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type keys It's a fairly simple project to print and build and you should be able to finish it off in a few hours. (including the printing) 
 
@@ -42,6 +43,24 @@ When the sidecar is running in normal mode it is not accessible by any network s
 <p>Hookup wire soldering iron and hand tools, super glue </p> <p>- Core electronics stock all of the above</p> 
 
 <h2>Dependences</h2>
+<pre>
+TOTP-RFC6238-generator - By dirkx - which saved me a lot of work. 
+Adafruit_GFX_Library at version 1.11.5 
+Adafruit_BusIO at version 1.14.1 
+Wire at version 2.0.0
+SPI at version 2.0.0
+Adafruit_ST7735_and_ST7789_Library at version 1.10.0
+Preferences at version 2.0.0
+MultiButton at version 1.2.0
+USB at version 2.0.0 
+WiFi at version 2.0.0
+AsyncTCP at version 1.1.4
+ESPAsyncWebSrv at version 1.2.6
+FS at version 2.0.0
+TOTP-RC6236-generator at version 1.0.0
+Base32-Decode at version 1.0.1
+ESPmDNS at version 2.0.0
+ArduinoOTA at version 2.0.0
 
 <h2>3D Printing</h2>
 The 3d model is based on cherry mx macro pad by LeoAnth found on thingiverse. I remixed that design to fit the Reverse TFT Feather it also has a pin hole so you can access the reset button externally so once complete the boot loader can be accessed.  It prints fine without supports on my snap maker in both ABS and PLA. Print it upside down with no special options. The Lid can then be glued in place once the project is complete and tested. There are also two small plastic squares that can be used to hold the feather in position. Use a drop of glue to hold them in position. I then just used 6 drops of super glue to afix the bottom. 

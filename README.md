@@ -21,7 +21,7 @@
 
 */
 
-<img src = "images/sidecar-image.jpeg">
+<img src = "images/sidecar-image2.jpeg">
 </PRE>
 <h2>About</h2> 
 The 2FA Sidecar is a small side keyboard of 5 Keys that will send time based two factor authentication as typed keyboard keys with just a single key press. <p>
@@ -29,6 +29,7 @@ The sidecar is compatible with Googles 2FA (TOTP; specified in RFC 6238) and wor
 The device should work on any platfrom that supports USB HID.
 <p>
 The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type keys It's a fairly simple project to print and build and you should be able to finish it off in a few hours. (including the printing) 
+<img src = "images/sidecar-image.jpeg">
 
 
 <h2>Security</h2>

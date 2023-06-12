@@ -34,6 +34,10 @@ The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Fe
 <img src = "images/sidecar2-image.jpeg">
 </p>
 
+<iframe width="420" height="315"
+src="https://www.youtube.com/embed/u4l2TvUD5HY">
+</iframe>
+
 <h2>Security</h2>
 
 When the sidecar is running in normal mode it is not accessible by any network services and maintains a network connection to update accurate time from a time server only. So it should not be easy for a malicious actor to connect to the sidecar and access the TOTP salt. It would be however possible to download new code to the ESP32 and then retrieve the salts from the parameters memory. So if you want to keep it as secure as possible. You may burn the protective Efuses on the ESP32 to protect flash memory. Even with this done it may be possible to retrieve the salts by much smarter people then i. So i warrant nothing. Use it at your own risk. It goes without question to say also that if someone is in possession of the device they can use your TOTP so you need to keep the device secure. In the same way you would with any key fob. 

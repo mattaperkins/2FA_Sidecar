@@ -31,6 +31,7 @@ The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Fe
 <p>
 
 <a href = "https://www.youtube.com/embed/u4l2TvUD5HY"> 
+A short youtube video is also available here. 
 <img src = "images/sidecar-image.jpeg">
 <img src = "images/sidecar2-image.jpeg">
 </a>

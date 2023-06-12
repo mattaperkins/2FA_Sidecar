@@ -30,13 +30,11 @@ The device should work on any platfrom that supports USB HID.
 The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type keys It's a fairly simple project to print and build and you should be able to finish it off in a few hours. (including the printing) 
 <p>
 
+<a href = "https://www.youtube.com/embed/u4l2TvUD5HY"> 
 <img src = "images/sidecar-image.jpeg">
 <img src = "images/sidecar2-image.jpeg">
+</a>
 </p>
-
-<iframe width="420" height="315"
-src="https://www.youtube.com/embed/u4l2TvUD5HY">
-</iframe>
 
 <h2>Security</h2>
 

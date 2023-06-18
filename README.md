@@ -25,7 +25,7 @@
 <h2>About</h2> 
 The 2FA Sidecar is a small side keyboard of 5 Keys that will send time based two factor authentication as typed keyboard keys with just a single key press. <p>
 The sidecar is compatible with Googles 2FA (TOTP; specified in RFC 6238) and works with many different systems. The device was developed because in my day job i spend a lot of time switching between security levels in different parts of a network I administer and need to open the phone grab the code type it in etc. The sidecar does it all with one key press and supports up to 5 TOTP's for different systems.  You can also of cause read the code off the TFT screen on the front of the device and type it yourself as well. 
-The device should work on any platfrom that supports USB HID.
+The device should work on any platform that supports USB HID.
 <p>
 The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type keys It's a fairly simple project to print and build and you should be able to finish it off in a few hours. (including the printing) 
 <p>
@@ -85,7 +85,7 @@ standoffs.stl - Plastic bits to hold the ESP32 in place
 
 <h2>Hookup </h3>
 <img src = "images/insides.jpeg">
-To Wire the Cherry MX keys is very simple. Wire one leg of each key to ground and then run a wire from the other leg of each key to the following pins. YOu might want to solder the switches before you pop them into the case. They can be held with a drop of glue but will fit snugly without as well.
+To Wire the Cherry MX keys is very simple. Wire one leg of each key to ground and then run a wire from the other leg of each key to the following pins. You might want to solder the switches before you pop them into the case. They can be held with a drop of glue but will fit snugly without as well.
 <pre>
 Key 1 = Pin (5)
 Key 2 = Pin (6)
@@ -93,6 +93,7 @@ Key 3 = Pin (9)
 Key 4 = Pin (10)
 Ket 5 = Pin (11)
 </pre>
+
 That's it. Once you flash the esp32 and power up press key 1 within the first 3 second of booting and you will enter a self test and config mode. In the self test mode you can push each key one by one and it will verify your soldering and operation of the keys. Once all 5 keys have been pushed the system will proceed to the config web menu.
 <img src = "images/wire1.jpeg">
 <img src = "images/wire2.jpeg">

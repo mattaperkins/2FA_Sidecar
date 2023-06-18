@@ -110,7 +110,7 @@ The sidecar can store up to five TOTP salts (one for each key) so make sure you 
 
 </p><p> 
 
-You may then configure your system SSID and password so the sidecar can get an accurate time at startup as well as your 5 TOTP's and a corrisponding name for each.  Enter in each option one at a time pressing submit at each option.  You can only submit using the button next to each option. (yes i know it's not pretty on the todo list it's an evolving project) . 
+You may then configure your system SSID and password so the sidecar can get an accurate time at startup as well as your 5 TOTP's and a corresponding name for each.  Enter in each option one at a time pressing submit at each option.  You can only submit using the button next to each option. (yes i know it's not pretty on the todo list it's an evolving project) . 
 </p><p> 
 A note about stored values.  The system does not display a value you have stored after an submit. This is on propose to protect the values stored in those options. If the values were displayed it would be trivial for a bad actor to grab the TOTP salts out of the config menu. The menu is not elegant but it does the job and it's unlikely you will access it every day so complaints to /dev/null  </p><p>
 

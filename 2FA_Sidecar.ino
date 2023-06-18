@@ -26,7 +26,7 @@
 // No need to change anything bellow 
 // 
 
-char *mainver = "1.04";
+char *mainver = "1.05";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789

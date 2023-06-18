@@ -94,6 +94,8 @@ Key 4 = Pin (10)
 Ket 5 = Pin (11)
 </pre>
 That's it. Once you flash the esp32 and power up press key 1 within the first 3 second of booting and you will enter a self test and config mode. In the self test mode you can push each key one by one and it will verify your soldering and operation of the keys. Once all 5 keys have been pushed the system will proceed to the config web menu.
+<img src = "images/wire1.jpeg">
+<img src = "images/wire2.jpeg">
 
 
 <h2>How to configure</h2>

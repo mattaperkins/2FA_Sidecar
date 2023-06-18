@@ -308,6 +308,9 @@ void loop() {
       tft.setCursor(3, 17);
       tft.setTextColor(ST77XX_RED);
       tft.print("NO VALID CONFIG");
+      delay(10000); 
+      ESP.restart(); 
+      
     };
 
     // Key 2
@@ -319,7 +322,6 @@ void loop() {
       tft.setCursor(140, 40);
       tft.setTextColor(ST77XX_YELLOW);
       tft.setFont(&FreeMono12pt7b);
-
       tft.println(*otp2);
     };
 
@@ -356,7 +358,6 @@ void loop() {
       tft.setCursor(140, 109);
       tft.setTextColor(ST77XX_YELLOW);
       tft.setFont(&FreeMono12pt7b);
-
       tft.println(*otp5);
     };
 
@@ -406,7 +407,11 @@ void loop() {
     Keyboard.println(*otp5);
     digitalWrite(LED_BUILTIN, LOW);
   }
+  // Hold down k5 to restart. 
+  if (key5.isLongClick()) {
+  ESP.restart(); 
+  }
 
-
+  
 
 }

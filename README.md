@@ -84,6 +84,7 @@ standoffs.stl - Plastic bits to hold the ESP32 in place
 
 
 <h2>Hookup </h3>
+<img src = "images/insides.jpeg">
 To Wire the Cherry MX keys is very simple. Wire one leg of each key to ground and then run a wire from the other leg of each key to the following pins. YOu might want to solder the switches before you pop them into the case. They can be held with a drop of glue but will fit snugly without as well.
 <pre>
 Key 1 = Pin (5)

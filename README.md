@@ -23,9 +23,17 @@
 
 </PRE>
 <h2>About</h2> 
-The 2FA Sidecar is a small side keyboard of 5 Keys that will send time based two factor authentication as typed keyboard keys with just a single key press. <p>
-The sidecar is compatible with Googles 2FA (TOTP; specified in RFC 6238) and works with many different systems. The device was developed because in my day job i spend a lot of time switching between security levels in different parts of a network I administer and need to open the phone grab the code type it in etc. The sidecar does it all with one key press and supports up to 5 TOTP's for different systems.  You can also of cause read the code off the TFT screen on the front of the device and type it yourself as well. 
-The device should work on any platform that supports USB HID.
+<p>The 2FA Sidecar is a small external keyboard-like device with five keys specifically designed for generating and sending time-based two-factor authentication (2FA) codes with a single key press. It is primarily designed to be compatible with Google's 2FA implementation known as Time-Based One-Time Password (TOTP), which is specified in RFC 6238.
+</p><p>
+The purpose of the 2FA Sidecar is to simplify the process of using 2FA codes when switching between different security levels in various parts of a network. Instead of having to manually open your phone, retrieve the code, and type it in, the sidecar device allows you to generate and send the code with just a single key press.
+</p><p>
+
+The device supports up to five different TOTP codes for different systems, allowing you to manage multiple 2FA-enabled accounts or services. Additionally, it features a TFT screen on the front where you can read the generated code if you prefer to type it manually.
+</p><p>
+
+The 2FA Sidecar is compatible with any platform that supports USB HID (Human Interface Device) protocols, making it versatile and usable across a wide range of devices and operating systems.
+
+</p>
 <p>
 The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type keys It's a fairly simple project to print and build and you should be able to finish it off in a few hours. (including the printing) 
 <p>

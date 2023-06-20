@@ -34,6 +34,14 @@ The device supports up to five different TOTP codes for different systems, allow
 The 2FA Sidecar is compatible with any platform that supports USB HID (Human Interface Device) protocols, making it versatile and usable across a wide range of devices and operating systems.
 
 </p>
+<h2>Versions</h2>
+<pre>
+1.0 Start of project. 
+1.3 First Public Release 
+1.5 Good working copy with basic cleanup
+1.10 Includes new PIN for access after bootup
+</pre>
+
 <p>
 The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type keys It's a fairly simple project to print and build and you should be able to finish it off in a few hours. (including the printing) 
 <p>

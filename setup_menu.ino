@@ -1,8 +1,8 @@
 // 2FA Sidecar
-// Matt Perkins - Copyright (C) 2023 
+// Matt Perkins - Copyright (C) 2023
 // Spawned out of the need to often type a lot of two factor authentication
 // but still have some security while remaning mostly isolated from the host system.
-// See github for 3D models and wiring diagram. 
+// See github for 3D models and wiring diagram.
 /*
 
     This program is free software: you can redistribute it and/or modify
@@ -132,7 +132,7 @@ void wifi_setup()
                     "You may submit only one option at a time - current settings are not displayed for security.<p>"
                     "<FORM ACTION=\"/get\">SSID: <input type=\"text\" name=\"ssid\"><input type=\"submit\" value=\"Submit\"></form><br>"
                     "<FORM ACTION=\"/get\">WiFi Password: <input type=\"text\" name=\"password\"><input type=\"submit\" value=\"Submit\"></form><br>"
-                    "<FORM ACTION=\"/get\">Timezone (AEST) : <input type=\"text\" name=\"tz\"><input type=\"submit\" value=\"Submit\"></form><br>"
+                    "<FORM ACTION=\"/get\">Access PIN (4 digits.blank for none) : <input type=\"text\" name=\"pin\"><input type=\"submit\" value=\"Submit\"></form><br>"
 
                     "<FORM ACTION=\"/get\">2FA Key 1 Name : <input type=\"text\" name=\"tfa_name_1\"><input type=\"submit\" value=\"Submit\"></form><br>"
                     "<FORM ACTION=\"/get\">2FA Key 1 Seed : <input type=\"text\" name=\"tfa_seed_1\"><input type=\"submit\" value=\"Submit\"></form><br>"
@@ -174,11 +174,11 @@ void wifi_setup()
       inputParam = PARAM_INPUT_2;
       preferences.putString("password", inputMessage);
     }
-    // GET input3 value on <ESP_IP>/get?tz=<inputMessage>
+    // GET input3 value on <ESP_IP>/get?pin=<inputMessage>
     else if (request->hasParam(PARAM_INPUT_3)) {
       inputMessage = request->getParam(PARAM_INPUT_3)->value();
       inputParam = PARAM_INPUT_3;
-      preferences.putString("tz", inputMessage);
+      preferences.putString("pin", inputMessage);
     }
 
     // Key 1
@@ -258,7 +258,7 @@ void wifi_setup()
       inputParam = "none";
     }
 
-    
+
     request->send(200, "text/html", "Setting preferences ("
                   + inputParam + ") with value: " + inputMessage +
                   "<br><a href=\"/\">Return to Home configuration</a>");

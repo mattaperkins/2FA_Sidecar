@@ -22,15 +22,16 @@
 
 
 #define NTP_SERVER "au.pool.ntp.org" //Adjust to your local time perhaps. 
+#define TZ "AEST" // Australian Estern time may be needed for clock display in the future. 
 
-// No need to change anything bellow 
-// 
+// No need to change anything bellow
+//
 
-char *mainver = "1.05";
+char *mainver = "1.10";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
-#include <SPI.h>  
+#include <SPI.h>
 #include <Preferences.h> // perstant storage
 
 // Misc Fonts
@@ -81,14 +82,18 @@ PinButton key5(11);
 
 int keytest = 0;
 int sline = 0;
+int pinno = 0;
+String  in_pin;
 
+// Incorrect Pin Delay
+int pindelay = 3000;
 
 AsyncWebServer server(80);
 
 // Setup SSID
 String ssid     = "Key-Sidecar";
 String password;
-String  tz;
+String  pin;
 
 String tfa_name_1;
 String tfa_seed_1;
@@ -108,7 +113,7 @@ String tfa_seed_5;
 // Paramaters wifi
 const char* PARAM_INPUT_1 = "ssid";
 const char* PARAM_INPUT_2 = "password";
-const char* PARAM_INPUT_3 = "tz";
+const char* PARAM_INPUT_3 = "pin";
 
 // Paramaters 2FA
 const char* TFA_INPUT_1 = "tfa_name_1";
@@ -224,14 +229,92 @@ void setup() {
   tft.print(WiFi.RSSI());
 
   // start the NTP client
-  tz = preferences.getString("tz", "");
-  const char  *ntz = tz.c_str();
-  configTzTime(ntz, NTP_SERVER);
+  configTzTime(TZ, NTP_SERVER);
   tft.println();
-  tft.printf("NTP started:%s", ntz);
+  tft.printf("NTP started:%s", TZ);
   time_t t = time(NULL);
   tft.printf(":%d", t);
   tft.println();
+
+
+  // Check to seee if we have PIN set and ask if we do.
+  pin = preferences.getString("pin", "");
+  const char* npin = pin.c_str();
+  if (strlen(npin) > 3) {
+    tft.setCursor(25, 25);
+    tft.setFont(&FreeSans12pt7b);
+    tft.fillScreen(ST77XX_BLACK);
+    tft.setTextColor(ST77XX_YELLOW);
+    tft.print("PIN?");
+    // read keys for PIN
+
+    while (1) {
+      static unsigned long lst = millis();
+      if (millis() - lst < 1000) {
+        // UPDATE KEYS
+        key1.update();
+        key2.update();
+        key3.update();
+        key4.update();
+        key5.update();
+      }
+
+      lst = millis();
+
+      if (key1.isClick()) {
+        pinno = pinno + 1;
+        in_pin = in_pin + "1";
+        tft.print("*");
+      }
+
+      if (key2.isClick()) {
+        pinno = pinno + 1;
+        in_pin = in_pin + "2";
+        tft.print("*");
+      }
+
+      if (key3.isClick()) {
+        pinno = pinno + 1;
+        in_pin = in_pin + "3";
+        tft.print("*");
+      }
+
+      if (key4.isClick()) {
+        pinno = pinno + 1;
+        in_pin = in_pin + "4";
+        tft.print("*");
+      }
+
+      if (key5.isClick()) {
+        pinno = pinno + 1;
+        in_pin = in_pin + "5";
+        tft.print("*");
+      }
+
+      if ( pinno == 4) {
+        if (in_pin == npin) {
+          tft.println();
+          tft.println("Correct.");
+          break;
+        } else {
+          tft.println();
+          tft.print("Incorrect!");
+          delay(pindelay);
+          ESP.restart();
+        }
+      }
+    }
+
+
+
+  } // end check PIN
+
+
+  tft.setTextColor(ST77XX_WHITE);
+
+
+  // Iniz Keyboard and begin display.
+  tft.setFont(&FreeSans9pt7b);
 
   tft.println("Iniz USB keybaord\n");
   Keyboard.begin();
@@ -239,8 +322,9 @@ void setup() {
   delay(2000);
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextColor(ST77XX_WHITE);
-
   updateotp = 1;
+
+
 
 }
 
@@ -254,6 +338,7 @@ void loop() {
     key4.update();
     key5.update();
   }
+
   lst = millis();
 
 
@@ -263,7 +348,7 @@ void loop() {
   time_t t = time(NULL);
 
   if (t < 1000000) {
-    delay(500); 
+    delay(500);
     return;
   };
 
@@ -308,9 +393,9 @@ void loop() {
       tft.setCursor(3, 17);
       tft.setTextColor(ST77XX_RED);
       tft.print("NO VALID CONFIG");
-      delay(10000); 
-      ESP.restart(); 
-      
+      delay(10000);
+      ESP.restart();
+
     };
 
     // Key 2
@@ -407,11 +492,11 @@ void loop() {
     Keyboard.println(*otp5);
     digitalWrite(LED_BUILTIN, LOW);
   }
-  // Hold down k5 to restart. 
+  // Hold down k5 to restart.
   if (key5.isLongClick()) {
-  ESP.restart(); 
+    ESP.restart();
   }
 
-  
+
 
 }

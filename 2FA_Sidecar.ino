@@ -5,7 +5,7 @@
 // See github for 3D models and wiring diagram.
 /*
 
-    This program is free software: you can redistribute it and/or modify
+    This program is free`                      nmjhsoftware: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -20,14 +20,17 @@
 
 */
 
-
+// Change for your country. 
 #define NTP_SERVER "au.pool.ntp.org" //Adjust to your local time perhaps. 
 #define TZ "AEST" // Australian Estern time may be needed for clock display in the future. 
 
-// No need to change anything bellow
-//
 
-char *mainver = "1.10";
+
+// Only other thing to select bellow is if your making the 5 key or 2 key version
+// Default is 5 key.  
+
+
+char *mainver = "1.11";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
@@ -74,13 +77,22 @@ USBHIDKeyboard Keyboard;
 int bargraph_pos;
 int updateotp;
 long time_x;
+
+
 PinButton key1(5);
 PinButton key2(6);
 PinButton key3(9);
 PinButton key4(10);
 PinButton key5(11);
 
+
 int keytest = 0;
+
+// Select either the 5 key or 2 key version 
+// maxkeys = 15 for 5 key 
+// maxkeys = 3 for 2 key 
+
+int maxkeys = 15; 
 int sline = 0;
 int pinno = 0;
 String  in_pin;

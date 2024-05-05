@@ -23,7 +23,7 @@
 
 </PRE>
 <h2>About</h2> 
-<p>The 2FA Sidecar is a small external keyboard-like device with five keys specifically designed for generating and sending time-based two-factor authentication (2FA) codes with a single key press. It is primarily designed to be compatible with Google's 2FA implementation known as Time-Based One-Time Password (TOTP), which is specified in RFC 6238.
+<p>The 2FA Sidecar is a small external keyboard-like device with five or two keys specifically designed for generating and sending time-based two-factor authentication (2FA) codes with a single key press. It is primarily designed to be compatible with Google's 2FA implementation known as Time-Based One-Time Password (TOTP), which is specified in RFC 6238.
 </p><p>
 The purpose of the 2FA Sidecar is to simplify the process of using 2FA codes when switching between different security levels in various parts of a network. Instead of having to manually open your phone, retrieve the code, and type it in, the sidecar device allows you to generate and send the code with just a single key press.
 </p><p>
@@ -37,13 +37,14 @@ The 2FA Sidecar is compatible with any platform that supports USB HID (Human Int
 <h2>Versions</h2>
 <pre>
 1.0 Start of project. 
-1.3 First Public Release 
-1.5 Good working copy with basic cleanup
-1.10 Includes new PIN for access after bootup
+1.3 First Public Release.
+1.5 Good working copy with basic cleanup.
+1.10 Includes new PIN for access after bootup.
+1.11 Added the mini 2 key version with slight change to the code to select at compile time. 
 </pre>
 
 <p>
-The system is made up of a 5 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type keys It's a fairly simple project to print and build and you should be able to finish it off in a few hours. (including the printing) 
+The system is made up of a 5 Key or 3 Key sidecar 3d model that will house an Adafruit Feather S3 Reverse module and 5 Cherry MX type keys It's a fairly simple project to print and build and you should be able to finish it off in a few hours. (including the printing) 
 <p>
 
 <a href = "https://www.youtube.com/embed/u4l2TvUD5HY"> 
@@ -93,6 +94,7 @@ base.stl - Bottom plate.
 main_body.stl - Main unit print upside down keys pop in. 
 shroud.stl - Optional but to put around keys. 
 standoffs.stl - Plastic bits to hold the ESP32 in place 
+mini.stl - Mini two key version complete. 
 </pre>
 
 
@@ -109,6 +111,8 @@ Key 3 = Pin (9)
 Key 4 = Pin (10)
 Ket 5 = Pin (11)
 </pre>
+
+The two key version you will only need to wire two pins. I found it easer to get the ground from the case of the esp32 RF can. Use some cutters to trim out some space for the wire but not to much as the display is not held firmly in place. 
 
 That's it. Once you flash the esp32 and power up press key 1 within the first 3 second of booting and you will enter a self test and config mode. In the self test mode you can push each key one by one and it will verify your soldering and operation of the keys. Once all 5 keys have been pushed the system will proceed to the config web menu.
 <img src = "images/wire1.jpeg">

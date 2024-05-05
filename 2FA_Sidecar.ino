@@ -1,5 +1,5 @@
 // 2FA Sidecar
-// Matt Perkins - Copyright (C) 2023
+// Matt Perkins - Copyright (C) 2024
 // Spawned out of the need to often type a lot of two factor authentication
 // but still have some security while remaning mostly isolated from the host system.
 // See github for 3D models and wiring diagram.
@@ -174,7 +174,7 @@ void setup() {
   tft.setCursor(0, 0);
   tft.setTextColor(ST77XX_WHITE);
   tft.setTextWrap(true);
-  tft.printf("\n2FA-Sidecar Ver %s\nBy Matt Perkins (C) 2023\n", mainver);
+  tft.printf("\n2FA-Sidecar Ver %s\nBy Matt Perkins (C) 2024\n", mainver);
   tft.printf("Press K1 to enter config/test\n");
 
   // Check for key and go to setup /test mode

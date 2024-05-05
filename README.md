@@ -51,6 +51,7 @@ The system is made up of a 5 Key or 3 Key sidecar 3d model that will house an Ad
 A short youtube video is also available here. 
 <img src = "images/sidecar-image.jpeg">
 <img src = "images/sidecar2-image.jpeg">
+<img src = "images/mini.jpeg">
 </a>
 </p>
 

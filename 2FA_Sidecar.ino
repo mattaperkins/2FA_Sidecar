@@ -30,7 +30,7 @@
 // Default is 5 key.  
 
 
-char *mainver = "1.11";
+char *mainver = "1.12";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
@@ -95,6 +95,7 @@ int keytest = 0;
 int maxkeys = 15; 
 int sline = 0;
 int pinno = 0;
+int wifitry = 10; // Number of times to try wifi before falling back to serial. 
 String  in_pin;
 
 // Incorrect Pin Delay
@@ -226,27 +227,49 @@ void setup() {
   sline = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
-    tft.printf("Establishing WiFi\n");
+    tft.printf("Establishing WiFi %d\n",wifitry);
     sline = sline + 1;
+    wifitry = wifitry -1; 
     if (sline > 4) {
       tft.fillScreen(ST77XX_BLACK);
       tft.setTextColor(ST77XX_WHITE);
-      tft.setCursor(3, 5);
+      tft.setCursor(1, 15);
       sline = 0 ;
     }
+    if(wifitry == 0){
+          break; 
+    }
   }
-  tft.print("IP: ");
-  tft.println(WiFi.localIP());
-  tft.print("Wifi: ");
-  tft.print(WiFi.RSSI());
 
-  // start the NTP client
-  configTzTime(TZ, NTP_SERVER);
-  tft.println();
-  tft.printf("NTP started:%s", TZ);
-  time_t t = time(NULL);
-  tft.printf(":%d", t);
-  tft.println();
+// If Wifi is found get time that way else try the serial port. 
+  if(wifitry != 0){ 
+    tft.fillScreen(ST77XX_BLACK);
+    tft.setTextColor(ST77XX_WHITE);
+    tft.setCursor(1, 15);
+    tft.print("IP: ");
+    tft.println(WiFi.localIP());  
+    tft.print("Wifi: ");
+    tft.print(WiFi.RSSI());
+    // start the NTP client
+    configTzTime(TZ, NTP_SERVER);
+    tft.println();
+    tft.printf("NTP started:%s", TZ);
+    time_t t = time(NULL);
+    tft.printf(":%d", t);
+    tft.println();
+    delay(1000); 
+      }else{
+    // Wifi Not found get time via serial/usb 
+    tft.fillScreen(ST77XX_BLACK);
+    tft.setTextColor(ST77XX_WHITE);
+    tft.setCursor(1, 15);
+    tft.print("WiFi not found. Serial fallback");
+    while (true);
+  }
+
+  
+
+
 
 
   // Check to seee if we have PIN set and ask if we do.
@@ -365,7 +388,7 @@ void loop() {
   };
 
 
-
+ // Print Bargraph 
   bargraph_pos = (t % 60);
   if (bargraph_pos > 29) {
     bargraph_pos = bargraph_pos - 30;

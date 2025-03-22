@@ -97,7 +97,7 @@ void setup_test()
       keytest = keytest + 5;
     }
 
-    if (keytest == 15) {
+    if (keytest == maxkeys) {
       tft.setCursor(105, 58);
       tft.print("Test Pass");
       delay(2000);

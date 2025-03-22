@@ -41,6 +41,7 @@ The 2FA Sidecar is compatible with any platform that supports USB HID (Human Int
 1.5 Good working copy with basic cleanup.
 1.10 Includes new PIN for access after bootup.
 1.11 Added the mini 2 key version with slight change to the code to select at compile time. 
+1.13 Make some changes to clean thing up and allow manual entry of time via serial in the future
 </pre>
 
 <p>

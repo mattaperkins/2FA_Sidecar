@@ -20,17 +20,17 @@
 
 */
 
-// Change for your country. 
+// Change for your country.
 #define NTP_SERVER "au.pool.ntp.org" //Adjust to your local time perhaps. 
 #define TZ "AEST" // Australian Estern time may be needed for clock display in the future. 
 
 
 
 // Only other thing to select bellow is if your making the 5 key or 2 key version
-// Default is 5 key.  
+// Default is 5 key.
 
 
-char *mainver = "1.12";
+char *mainver = "1.20";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
@@ -77,7 +77,8 @@ USBHIDKeyboard Keyboard;
 int bargraph_pos;
 int updateotp;
 long time_x;
-
+String inputBuffer = "";
+int notime;
 
 PinButton key1(5);
 PinButton key2(6);
@@ -88,14 +89,14 @@ PinButton key5(11);
 
 int keytest = 0;
 
-// Select either the 5 key or 2 key version 
-// maxkeys = 15 for 5 key 
-// maxkeys = 3 for 2 key 
+// Select either the 5 key or 2 key version
+// maxkeys = 15 for 5 key
+// maxkeys = 3 for 2 key
 
-int maxkeys = 15; 
+int maxkeys = 15;
 int sline = 0;
 int pinno = 0;
-int wifitry = 10; // Number of times to try wifi before falling back to serial. 
+int wifitry = 10; // Number of times to try wifi before falling back to serial.
 String  in_pin;
 
 // Incorrect Pin Delay
@@ -227,27 +228,27 @@ void setup() {
   sline = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
-    tft.printf("Establishing WiFi %d\n",wifitry);
+    tft.printf("Establishing WiFi %d\n", wifitry);
     sline = sline + 1;
-    wifitry = wifitry -1; 
+    wifitry = wifitry - 1;
     if (sline > 4) {
       tft.fillScreen(ST77XX_BLACK);
       tft.setTextColor(ST77XX_WHITE);
       tft.setCursor(1, 15);
       sline = 0 ;
     }
-    if(wifitry == 0){
-          break; 
+    if (wifitry == 0) {
+      break;
     }
   }
 
-// If Wifi is found get time that way else try the serial port. 
-  if(wifitry != 0){ 
+  // If Wifi is found get time that way else try the serial port.
+  if (wifitry != 0) {
     tft.fillScreen(ST77XX_BLACK);
     tft.setTextColor(ST77XX_WHITE);
     tft.setCursor(1, 15);
     tft.print("IP: ");
-    tft.println(WiFi.localIP());  
+    tft.println(WiFi.localIP());
     tft.print("Wifi: ");
     tft.print(WiFi.RSSI());
     // start the NTP client
@@ -257,19 +258,48 @@ void setup() {
     time_t t = time(NULL);
     tft.printf(":%d", t);
     tft.println();
-    delay(1000); 
-      }else{
-    // Wifi Not found get time via serial/usb 
+    delay(1000);
+  } else {
+    // Wifi Not found get time via serial/usb
+    notime = 0;
     tft.fillScreen(ST77XX_BLACK);
     tft.setTextColor(ST77XX_WHITE);
     tft.setCursor(1, 15);
-    tft.print("WiFi not found. Serial fallback");
-    while (true);
+    tft.print("WiFi not found. USB fallback");
+
+    Serial.begin(115200);
+    Serial.println("Enter a Unix timestamp:");
+    while (notime == 0) {
+      while (Serial.available()) {
+        char c = Serial.read();
+
+        if (c == '\n' || c == '\r') {
+          if (inputBuffer.length() > 0) {
+            time_t unixTime = inputBuffer.toInt();
+
+            struct timeval tv = { unixTime, 0 };  // seconds, microseconds
+            settimeofday(&tv, nullptr);          // Set system time
+
+            struct tm timeinfo;
+            if (getLocalTime(&timeinfo)) {
+              Serial.print("Time set to: ");
+              Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+              notime = 1;
+            } else {
+              Serial.println("Failed to get local time");
+            }
+
+            inputBuffer = "";  
+            Serial.println("OK");
+          }
+        } else if (isDigit(c)) {
+          inputBuffer += c;
+        }
+      }
+      delay(10);
+    }
+
   }
-
-  
-
-
 
 
   // Check to seee if we have PIN set and ask if we do.
@@ -388,7 +418,7 @@ void loop() {
   };
 
 
- // Print Bargraph 
+  // Print Bargraph
   bargraph_pos = (t % 60);
   if (bargraph_pos > 29) {
     bargraph_pos = bargraph_pos - 30;

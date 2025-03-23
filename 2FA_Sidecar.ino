@@ -5,7 +5,7 @@
 // See github for 3D models and wiring diagram.
 /*
 
-    This program is free`                      nmjhsoftware: you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -30,7 +30,7 @@
 // Default is 5 key.
 
 
-char *mainver = "1.20";
+char *mainver = "1.21";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789

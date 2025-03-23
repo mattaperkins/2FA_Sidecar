@@ -42,6 +42,7 @@ The 2FA Sidecar is compatible with any platform that supports USB HID (Human Int
 1.10 Includes new PIN for access after bootup.
 1.11 Added the mini 2 key version with slight change to the code to select at compile time. 
 1.13 Make some changes to clean thing up and allow manual entry of time via serial in the future
+1.21 Add support for setting the esp32 clock via USB and the host computer clock 
 </pre>
 
 <p>
@@ -100,9 +101,6 @@ mini.stl - Mini two key version complete.
 </pre>
 
 
-
-
-
 <h2>Hookup </h3>
 <img src = "images/insides.jpeg">
 To Wire the Cherry MX keys is very simple. Wire one leg of each key to ground and then run a wire from the other leg of each key to the following pins. You might want to solder the switches before you pop them into the case. They can be held with a drop of glue but will fit snugly without as well.
@@ -134,7 +132,11 @@ The sidecar can store up to five TOTP salts (one for each key) so make sure you 
 
 You may then configure your system SSID and password so the sidecar can get an accurate time at startup as well as your 5 TOTP's and a corresponding name for each.  Enter in each option one at a time pressing submit at each option.  You can only submit using the button next to each option. (yes i know it's not pretty on the todo list it's an evolving project) . 
 </p><p> 
-A note about stored values.  The system does not display a value you have stored after an submit. This is on propose to protect the values stored in those options. If the values were displayed it would be trivial for a bad actor to grab the TOTP salts out of the config menu. The menu is not elegant but it does the job and it's unlikely you will access it every day so complaints to /dev/null  </p><p>
+A note about stored values.  The system does not display a value you have stored after you submit. This is on propose to protect the values stored in those options. If the values were displayed it would be trivial for a bad actor to grab the TOTP salts out of the config menu. The menu is not elegant but it does the job and it's unlikely you will access it every day so complaints to /dev/null  </p><p>
+<P>
+As of version 1.20, there is now an option to set the ESP32 clock via USB for situations where Wi-Fi is not available (such as when you're on the road). If Wi-Fi cannot be found, the TFTP display will show: "WiFi not found. USB fallback." While this message is displayed, use the companion Python program settime.py to set the clock over USB. You will need to edit the Python script to include the correct path to your serial device connected to the sidecar.
+</p>
+
 
 Once everything is configured you can reboot your sidecar and it will boot up in display mode and connect to your local wifi. Grab the time and start spitting out 5 TOTP's every 30 seconds. The unit will also then show up on your computer as a standard USB type keyboard.  When you need to provide a 2FA for authentication on a web site or in a ssh simply tap the key that corresponds to one of the 5 TOTP's you want and the sidecar will type the TOTP for you and press enter. 
 </p><p> 

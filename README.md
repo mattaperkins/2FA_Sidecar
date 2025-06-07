@@ -1,6 +1,6 @@
 <PRE>
 // 2FA Sidecar
-// Matt Perkins - Copyright (C) 2024
+// Matt Perkins - Copyright (C) 2025
 // Spawned out of the need to often type a lot of two factor authentication
 // but still have some security while remaining mostly isolated from the host system.
 // See github for 3D models and wiring diagram.

@@ -94,7 +94,7 @@ int keytest = 0;
 // maxkeys = 15 for 5 key
 // maxkeys = 3 for 2 key
 
-int maxkeys = 15;
+int maxkeys = 3;
 int sline = 0;
 int pinno = 0;
 int wifitry = 10; // Number of times to try wifi before falling back to serial.

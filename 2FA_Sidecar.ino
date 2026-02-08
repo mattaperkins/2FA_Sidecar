@@ -30,12 +30,13 @@
 // Default is 5 key.
 
 
-char *mainver = "1.21";
+char *mainver = "1.22";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
 #include <SPI.h>
 #include <Preferences.h> // perstant storage
+#include <esp_system.h> 
 
 // Misc Fonts
 #include "Fonts/FreeSans9pt7b.h"
@@ -157,6 +158,7 @@ Preferences preferences;
 
 void setup() {
 
+  
   // turn on backlite
   pinMode(TFT_BACKLITE, OUTPUT);
   digitalWrite(TFT_BACKLITE, HIGH);
@@ -177,6 +179,7 @@ void setup() {
   tft.setTextColor(ST77XX_WHITE);
   tft.setTextWrap(true);
   tft.printf("\n2FA-Sidecar Ver %s\nBy Matt Perkins (C) 2024\n", mainver);
+  tft.printf("Reset reason: %d\n", esp_reset_reason());
   tft.printf("Press K1 to enter config/test\n");
 
   // Check for key and go to setup /test mode

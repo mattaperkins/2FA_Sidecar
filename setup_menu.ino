@@ -110,6 +110,8 @@ void setup_test()
 
     }
   }
+
+  
   wifi_setup();
 
 }
@@ -118,16 +120,19 @@ void wifi_setup()
 {
 
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(ssid);
+  bool ok = WiFi.softAP(ssid.c_str());
+
+
 
   tft.setCursor(3, 35);
   tft.fillScreen(ST77XX_RED);
   tft.printf("Connect via Wifi\nSSID:%s\nthen browse to \nhttp://192.168.4.1", ssid);
 
 
-
   // Send web page with input fields to client
   server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
+
+
     request->send_P(200, "text/html", "<HEAD><TITLE>Matt's 2FA-Sidecar </TITLE></HEAD><BODY><H2>2FA-Sidecar configuration menu - (C) 2023 Matt Perkins - GPL</H2>"
                     "You may submit only one option at a time - current settings are not displayed for security.<p>"
                     "<FORM ACTION=\"/get\">SSID: <input type=\"text\" name=\"ssid\"><input type=\"submit\" value=\"Submit\"></form><br>"
@@ -157,6 +162,7 @@ void wifi_setup()
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest * request) {
     String inputMessage;
     String inputParam;
+
 
     preferences.begin("2FA_Sidecar", false);
 

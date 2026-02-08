@@ -80,7 +80,7 @@ Preferences at version 2.0.0
 MultiButton at version 1.2.0
 USB at version 2.0.0 
 WiFi at version 2.0.0
-AsyncTCP at version 1.1.4
+AsyncTCP at version 3.4.10
 ESPAsyncWebSrv at version 1.2.9
 FS at version 2.0.0
 TOTP-RC6236-generator at version 1.0.0

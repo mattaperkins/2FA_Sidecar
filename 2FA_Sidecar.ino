@@ -30,7 +30,7 @@
 // Default is 5 key.
 
 
-char *mainver = "1.22";
+char *mainver = "1.30";
 
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
